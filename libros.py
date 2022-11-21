@@ -1,53 +1,48 @@
-from db import dbQuery
+from db import dbConsulta, dbModificacion
 
-#Lo que hace cada función es elaborar un diccionario directamente
-#formateado desde los datos ingresados, para que los módulos de DB 
-#puedan realizar las consultas sin ningún tipo de operación, sencillamente
-#tomando los ítems correspondientes..
 
-def consultarLibro(params):
-    consulta = {
-        'tabla': 'libros',
-        'campo': ','.join(params),
-        'parametro': ','.join([params[param] for param in params])
-
-    }
-#    dbQuery('select', consulta)
-
-def consultarEstadoLibro(params):
-    consulta = {
-        'tabla': params['tabla'],
-        'tablasForaneas': [f'{param[0]} ON {param[1]}={param[2]}' for param in params['tablasForaneas']],
-        'campos': ','.join(params['campos']),
-        'parametro': params['parametro']
-    }
-    return consulta
+def consultarLibro(campo, valor):
+    consulta = f'SELECT * FROM libros WHERE {campo} LIKE "{valor}"'
+    res=dbConsulta(consulta)
+    print(res)
+    return res
     
+def ingresarLibro(valoresPar):
+    consulta = f'''INSERT INTO libros ({",".join([campo for campo in valoresPar])}) VALUES ({",".join([f"'{valoresPar[campo]}'" for campo in valoresPar])})'''
+    print(consulta)
+    try:
+        res=dbModificacion(consulta)
+        print("Ingresado con éxito")
+        return res
+    except Exception as e:
+        print('Hubo un error al ingresar el libro: '+str(e))
 
-def ingresarLibro(params):
-    consulta = {
-        'tabla': params['tabla'],
-        'campos': 'titulo,autor,isbn',
-        'valores': ','.join([params['titulo'],params['autor'],str(params['isbn'])])
-    }
+def eliminarLibro(id):
+    consulta = f'DELETE FROM libros WHERE id={id}'
+    print(consulta)
+    try:
+        dbModificacion(consulta)
+    except:
+        print('Hubo un error al eliminar el libro')
+
+def modificarLibro(valoresPar, id):
+    consulta = f'''UPDATE libros SET {",".join([campo+"='"+valoresPar[campo]+"'"  for campo in valoresPar])} WHERE id={id}'''
+    try:
+        res=dbModificacion(consulta)
+        print("Modificado con éxito")
+    except Exception as e:
+        print('Hubo un error al ingresar el libro: '+str(e))
+
+'''
+def consultarEstadoLibro(id):
+    consulta = f'SELECT estado FROM prestamos INNER JOIN libros ON libros.pklibro = prestamos.fklibro WHERE libros.id={id}'
     return consulta
 
-def eliminarLibro(params):
-    consulta = {
-        'tabla': params['tabla'],
-        'parametro': params['parametro']
-    }
-    return consulta
-    
-def modificarLibro(params):
-    consulta = {
-    'tabla': params['tabla'],
-    'campos': ','.join([param for param in params['camposValores']]),
-    'valores': ','.join([params['camposValores'][param] for param in params['camposValores']]),
-    'parametro': params['parametro']
-    }
+def prestarLibro(idLibro, idCliente):
+    consulta = f'INSERT INTO prestamos () WHERE fklibro={idLibro} AND fkcliente={idCliente}'
     return consulta
 
-#def prestarLibro():
-
-
+def devolverLibro(valor):
+    consulta = f'UPDATE prestamos SET estado=0 WHERE fklibro={valor}'
+    return consulta
+'''
