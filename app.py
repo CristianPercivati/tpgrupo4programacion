@@ -4,6 +4,4 @@ from libros import consultarLibro, ingresarLibro, eliminarLibro, modificarLibro
 # el módulo "libros". La idea es que el desarrollador simplemente pase un
 # diccionario con las propiedades pertinentes para realizar una consulta.
 
-modificarLibro({
-    'autor': 'Guillermo'
-}, 11069)
+consultarLibro("autor","%Rowling%")
