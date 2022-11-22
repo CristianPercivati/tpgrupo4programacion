@@ -1,37 +1,84 @@
-from db import dbConsulta, dbModificacion
+from db import dbConsulta, dbModificacion, consultarTabla, ingresarRegistro, modificarRegistro, eliminarRegistro
 
 
 def consultarLibro(campo, valor):
-    consulta = f'SELECT * FROM libros WHERE {campo} LIKE "{valor}"'
-    res=dbConsulta(consulta)
-    print(res)
-    return res
-    
-def ingresarLibro(valoresPar):
-    consulta = f'''INSERT INTO libros ({",".join([campo for campo in valoresPar])}) VALUES ({",".join([f"'{valoresPar[campo]}'" for campo in valoresPar])})'''
-    print(consulta)
-    try:
-        res=dbModificacion(consulta)
-        print("Ingresado con éxito")
-        return res
-    except Exception as e:
-        print('Hubo un error al ingresar el libro: '+str(e))
+    res = consultarTabla(campo, valor, "libros")
+    respuesta = ''
+    for item in res:
+        respuesta = respuesta + f'''
+        **************\n
+        Título: {item[1]}\n
+        Autor: {item[2]}\n
+        ISBN: {item[3]}\n
+        Estado: -\n
+        **************'''
+    return respuesta
 
-def eliminarLibro(id):
-    consulta = f'DELETE FROM libros WHERE id={id}'
-    print(consulta)
-    try:
-        dbModificacion(consulta)
-    except:
-        print('Hubo un error al eliminar el libro')
 
-def modificarLibro(valoresPar, id):
-    consulta = f'''UPDATE libros SET {",".join([campo+"='"+valoresPar[campo]+"'"  for campo in valoresPar])} WHERE id={id}'''
+def ingresarLibro(autor, titulo, isbn):
     try:
-        res=dbModificacion(consulta)
-        print("Modificado con éxito")
+        ingresarRegistro({
+            'autor': autor,
+            'titulo': titulo,
+            'isbn': isbn
+        }, "libros")
+        return "Libro ingresado correctamente."
     except Exception as e:
-        print('Hubo un error al ingresar el libro: '+str(e))
+        return "Hubo un error al ingresar el libro: " + str(e)
+
+
+def eliminarLibro(isbn):
+    res = consultarTabla('isbn', isbn, "libros")
+    respuesta = ''
+    for item in res:
+        respuesta = respuesta + f'''
+        **************\n
+        Título: {item[1]}\n
+        Autor: {item[2]}\n
+        ISBN: {item[3]}\n
+        Estado: -\n
+        **************'''
+    print(respuesta)
+
+    confirmacion = input("¿Está seguro que desea eliminar este libro? S/N:\n")
+
+    if confirmacion.upper() == "S":
+        try:
+            eliminarRegistro(item[0], 'libros')
+            return "Libro borrado exitosamente"
+        except Exception as e:
+            return "Ocurrió un error al intentar eliminar: " + str(e)
+    elif confirmacion.upper() == "N":
+        return "Operación abortada."
+    else:
+        return "Ingreso no válido"
+
+
+def modificarLibro(isbn):
+    #
+    item = consultarTabla('isbn', isbn, "libros")
+    print(item)
+    respuesta = ''
+    respuesta = respuesta + f'''
+        **************\n
+        Título: {item[0][1]}\n
+        Autor: {item[0][2]}\n
+        ISBN: {item[0][3]}\n
+        Estado: -\n
+        **************'''
+    print(respuesta)
+    print("A continuación modifique los datos del libro. Si no desea modificar el dato, presione Enter.")
+    titulo = str(input("Titulo: "+item[0][1]) or item[0][1])
+    print("Nuevo valor: "+titulo)
+    autor = str(input("Autor: "+item[0][2]) or item[0][2])
+    print("Nuevo valor: "+autor)
+    isbn = str(input("isbn: "+item[0][3]) or item[0][3])
+    print("Nuevo valor: "+isbn)
+    try:
+        modificarRegistro({'titulo': titulo, 'autor': autor, 'isbn': isbn}, item[0][0], "libros")
+        return "modificado con éxito"
+    except Exception as e:
+        return "Error: "+str(e)
 
 '''
 def consultarEstadoLibro(id):

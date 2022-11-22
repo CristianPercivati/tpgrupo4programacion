@@ -14,9 +14,12 @@ def conectarse():
         contrasenia = getpass.getpass("Contraseña: ", stream=None)
         servidor = input("servidor: ")
         bdd = input("bbd: ")
-        f = open("config.cfg","w")
-        f.write('\n'.join([usuario,contrasenia,servidor,bdd]))
-        f.close()
+        try:
+            f = open("config.cfg","w")
+            f.write('\n'.join([usuario,contrasenia,servidor,bdd]))
+            f.close()
+        except Exception as e:
+            print(e)
 
     conexion = mysql.connector.connect(
                                 user=usuario,

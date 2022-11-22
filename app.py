@@ -1,7 +1,4 @@
 from libros import consultarLibro, ingresarLibro, eliminarLibro, modificarLibro
+from menu import menu_principal, gestion_libro, gestion_cliente
 
-# A continuación se muestra el correcto uso de las funciones desarrolladas en
-# el módulo "libros". La idea es que el desarrollador simplemente pase un
-# diccionario con las propiedades pertinentes para realizar una consulta.
-
-consultarLibro("autor","%Rowling%")
+menu_principal(0)
