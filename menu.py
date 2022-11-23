@@ -17,15 +17,18 @@ def submenuConsultarCliente():
         return
     elif subOpciones == 'T':
         consulta = input("Escriba el teléfono del cliente: ")
-        consultarCliente('telefono', consulta)
+        resultado=consultarCliente('tel', consulta)
+        print(resultado)
         return
     elif subOpciones == 'A':
         consulta = input("Escriba la dirección del cliente: ")
-        consultarCliente('direccion', consulta)
+        resultado=consultarCliente('direccion', consulta)
+        print(resultado)
         return
     elif subOpciones == 'D':
         consulta = input("Escriba el DNI del cliente: ")
-        consultarCliente('dni', consulta)
+        resultado=consultarCliente('dni', consulta)
+        print(resultado)
         return
     else:
         print('\nSeleccione opción valida \n')
