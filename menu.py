@@ -1,8 +1,56 @@
 from libros import consultarLibro, ingresarLibro, eliminarLibro, modificarLibro
+from clientes import consultarCliente, eliminarCliente, modificarCliente, ingresarCliente
 
 menu = 0
 subOpciones = ''
 
+def submenuConsultarCliente():
+    tabla = "clientes"
+    subOpciones = input(
+        'Consultar por: \nN. Nombre \nT. Teléfono \nA. Dirección\nD. DNI\nSelección: ')
+    subOpciones = subOpciones.upper()
+
+    if subOpciones == 'N':
+        consulta = input("Escriba el nombre (o parte del nombre) del cliente:: ")
+        resultado = consultarCliente('nombre', consulta)
+        print(resultado)
+        return
+    elif subOpciones == 'T':
+        consulta = input("Escriba el teléfono del cliente: ")
+        consultarCliente('telefono', consulta)
+        return
+    elif subOpciones == 'A':
+        consulta = input("Escriba la dirección del cliente: ")
+        consultarCliente('direccion', consulta)
+        return
+    elif subOpciones == 'D':
+        consulta = input("Escriba el DNI del cliente: ")
+        consultarCliente('dni', consulta)
+        return
+    else:
+        print('\nSeleccione opción valida \n')
+        gestion_cliente(subOpciones)
+
+def submenuAltaCliente():
+    dni = input("Ingrese el DNI: ")
+    nombre = input("Ingrese el nombre: ")
+    telefono = input("Ingrese el teléfono: ")
+    direccion = input("Ingrese la direccion: ")
+    respuesta = ingresarCliente(dni, nombre, telefono, direccion)
+    print(respuesta)
+    return
+
+def submenuModificarCliente():
+    dni = input("Ingrese el DNI: ")
+    respuesta = modificarCliente(dni)
+    print(respuesta)
+    return
+
+def submenuEliminarCliente():
+    dni = input("Ingrese el DNI: ")
+    respuesta = eliminarCliente(dni)
+    print(respuesta)
+    return
 
 def gestion_cliente(subOpciones):
     subOpciones = input(
@@ -10,74 +58,88 @@ def gestion_cliente(subOpciones):
     )
     subOpciones = subOpciones.upper()
     if subOpciones == 'A':
-        print('ALTA CLIENTE')
+        submenuAltaCliente()
+        menu_principal(0)
     elif subOpciones == 'C':
         print('CONSULTA ESTADO DEL CLIENTE')
+        submenuConsultarCliente()
+        menu_principal(0)
     elif subOpciones == 'M':
         print('MODIFICAR TELEFONO O DIRECCION DEL CLIENTE')
+        submenuModificarCliente()
+        menu_principal(0)
     elif subOpciones == 'E':
         print('ELIMINAR CLIENTE')
+        submenuEliminarCliente()
+        menu_principal(0)
     elif subOpciones == 'V':
         menu_principal(menu)
     else:
         print('\nSeleccione opción valida \n')
         gestion_cliente(subOpciones)
 
+
 def submenuConsultarLibro():
-    subOpciones = input('Consultar por: \nA. Autor \nT. Título \nI. ISBN')
+    tabla = "libros"
+    subOpciones = input(
+        'Consultar por: \nA. Autor \nT. Título \nI. ISBN\nSelección: ')
     subOpciones = subOpciones.upper()
 
     if subOpciones == 'A':
-        consulta = input("Escriba el nombre del autor:")
-        resultado=consultarLibro('autor', consulta)
+        consulta = input("Escriba el nombre del autor: ")
+        resultado = consultarLibro('autor', consulta)
         print(resultado)
         return
     elif subOpciones == 'T':
-        consulta = input("Escriba el título del libro:")
+        consulta = input("Escriba el título del libro: ")
         consultarLibro('titulo', consulta)
+        return
     elif subOpciones == 'I':
+        consulta = input("Escriba el ISBN: ")
         consultarLibro('ISBN', consulta)
+        return
     else:
         print('\nSeleccione opción valida \n')
         gestion_libro(subOpciones)
 
 def submenuAltaLibro():
-    autor = input("Ingrese el autor")
-    titulo = input("Ingrese el título")
-    isbn = input("Ingrese el ISBN")
-    respuesta=ingresarLibro(autor, titulo, isbn)
+    autor = input("Ingrese el autor: ")
+    titulo = input("Ingrese el título: ")
+    isbn = input("Ingrese el ISBN: ")
+    respuesta = ingresarLibro(autor, titulo, isbn)
     print(respuesta)
     return
 
 def submenuEliminarLibro():
-    isbn = input("Ingrese el ISBN.")
-    respuesta=eliminarLibro(isbn)
+    isbn = input("Ingrese el ISBN: ")
+    respuesta = eliminarLibro(isbn)
     print(respuesta)
     return
 
 def submenuModificarLibro():
-    isbn=input("Ingrese el ISBN.")
-    respuesta=modificarLibro(isbn)
+    isbn = input("Ingrese el ISBN: ")
+    respuesta = modificarLibro(isbn)
     print(respuesta)
     return
+
 
 def gestion_libro(subOpciones):
     subOpciones = input(
         'Gestión de Libro \n A.Alta Libro \n C.Consultar Libro \n M.Modificar Libro \n E.Eliminar Libro \n V.Volver al menú anterior \n'
     )
     subOpciones = subOpciones.upper()
-    if subOpciones=='A':
+    if subOpciones == 'A':
         submenuAltaLibro()
-        return
+        menu_principal(0)
     if subOpciones == 'C':
         submenuConsultarLibro()
-        return
-    elif subOpciones=='M':
+        menu_principal(0)
+    elif subOpciones == 'M':
         submenuModificarLibro()
-        return
-    elif subOpciones=='E':
+        menu_principal(0)
+    elif subOpciones == 'E':
         submenuEliminarLibro()
-        return
+        menu_principal(0)
     elif subOpciones == 'V':
         menu_principal(menu)
     else:
