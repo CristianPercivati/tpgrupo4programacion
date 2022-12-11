@@ -39,7 +39,6 @@ def conectarse():
                                 host=servidor,
                                 database=bdd
         )
-        input("DB encontrada, presione una tecla para continuar.")
         return conexion
     else:
         cursor.execute(f"CREATE DATABASE {bdd}")

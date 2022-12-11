@@ -39,8 +39,8 @@ def styleSubmenuConPrest():
     ║     CONSULTA POR:                    ║
     ╠══════════════════════════════════════╣
     ║                                      ║
-    ║    L. ID LIBRO                       ║
-    ║    S. ID SOCIO                       ║
+    ║    L. ISBN LIBRO                     ║
+    ║    S. DNI SOCIO                      ║
     ║    F. FECHA PRÉSTAMO:                ║
     ║    V.Volver al menú anterior         ║
     ║                                      ║

@@ -190,9 +190,10 @@ def submenuConsultarPrestamo():
     tabla = "prestamos"
     subOpciones = styleSubmenuConPrest()    
     if subOpciones == 'L':
-        consulta = input("ID del libro: ")
-        resultado = consultarPrestamo('fk_libro', consulta)
+        consulta = input("ISBN del libro: ")
+        resultado = consultarPrestamo('isbn', consulta)
         print(resultado)
+        pausarPantalla()
         return
     elif subOpciones == 'S':
         consulta = input("ID del socio: ")

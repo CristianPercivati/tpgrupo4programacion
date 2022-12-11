@@ -4,16 +4,17 @@ from datetime import datetime
 def consultarPrestamo(campo, valor):
     res = consultarTabla(campo, valor, "libros")
     resPrestamo=consultarTabla('fk_libro', res[0][0], 'prestamos')
+    resClientes = consultarTabla('id', resPrestamo[0][2], 'clientes')
+    resLibros = consultarTabla('id', resPrestamo[0][1], 'libros')
     respuesta = ''
     for item in resPrestamo:
         respuesta = respuesta + f'''
         **************\n
-        ID_LIBRO: {item[1]}\n
-        ID_SOCIO: {item[2]}\n
-        FECHA_PRESTAMO: {item[3]}
-        Estado Prestamo: {item[4]}-\n
+        NOMBRE LIBRO: {resLibros[0][1]}\n
+        NOMBRE SOCIO: {resClientes[0][2]}\n
+        FECHA_PRESTAMO: {item[4]}
+        Estado Prestamo: {item[3]}-\n
         **************'''
-    print(respuesta)
     return respuesta
 
 

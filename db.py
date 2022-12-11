@@ -18,6 +18,7 @@ def dbModificacion(consulta):
 
 def consultarTabla(campo, valor, tabla):
     consulta = f'SELECT * FROM {tabla} WHERE {campo} LIKE "%{valor}%"'
+    print(consulta)
     res=dbConsulta(consulta)
     return res
     
