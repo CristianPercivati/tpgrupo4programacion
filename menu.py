@@ -191,13 +191,15 @@ def submenuConsultarPrestamo():
     subOpciones = styleSubmenuConPrest()    
     if subOpciones == 'L':
         consulta = input("ISBN del libro: ")
-        resultado = consultarPrestamo('isbn', consulta)
+        resultado = consultarPrestamo('isbn', consulta,"libro")
         print(resultado)
         pausarPantalla()
         return
     elif subOpciones == 'S':
-        consulta = input("ID del socio: ")
-        consultarPrestamo('fk_cliente', consulta)
+        consulta = input("DNI del socio: ")
+        resultado = consultarPrestamo('dni', consulta,"cliente")
+        print(resultado)
+        pausarPantalla()
         return
     elif subOpciones == 'F':
         consulta = input("Escriba la fecha del Prestamo: ")

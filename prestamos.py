@@ -1,21 +1,38 @@
 from db import dbConsulta, dbModificacion, consultarTabla, ingresarRegistro, modificarRegistro, eliminarRegistro
 from datetime import datetime
 
-def consultarPrestamo(campo, valor):
-    res = consultarTabla(campo, valor, "libros")
-    resPrestamo=consultarTabla('fk_libro', res[0][0], 'prestamos')
-    resClientes = consultarTabla('id', resPrestamo[0][2], 'clientes')
-    resLibros = consultarTabla('id', resPrestamo[0][1], 'libros')
-    respuesta = ''
-    for item in resPrestamo:
-        respuesta = respuesta + f'''
-        **************\n
-        NOMBRE LIBRO: {resLibros[0][1]}\n
-        NOMBRE SOCIO: {resClientes[0][2]}\n
-        FECHA_PRESTAMO: {item[4]}
-        Estado Prestamo: {item[3]}-\n
-        **************'''
-    return respuesta
+def consultarPrestamo(campo, valor,tipo):
+    if tipo=='libro':
+        resLibros = consultarTabla(campo, valor, "libros")
+        resPrestamo=consultarTabla('estado=1 AND fk_libro', resLibros[0][0], 'prestamos')
+        resClientes = consultarTabla('id', resPrestamo[0][2], 'clientes')
+        respuesta = ''
+        for item in resPrestamo:
+            respuesta = respuesta + f'''
+            **************\n
+            NOMBRE LIBRO: {resLibros[0][1]}\n
+            NOMBRE SOCIO: {resClientes[0][2]}\n
+            FECHA_PRESTAMO: {item[4]}
+            Estado Prestamo: {"En préstamo" if item[3]==1 else "Devuelto"}\n
+            **************'''
+        return respuesta
+    elif tipo=="cliente":
+        resClientes = consultarTabla(campo, valor, 'clientes')
+        print(resClientes[0][0])
+        resPrestamo=consultarTabla('estado=1 AND fk_cliente', resClientes[0][0], 'prestamos')
+        resLibros = consultarTabla('id', resPrestamo[0][1], 'libros')
+        respuesta = ''
+        for item in resPrestamo:
+            respuesta = respuesta + f'''
+            **************\n
+            NOMBRE LIBRO: {resLibros[0][1]}\n
+            NOMBRE SOCIO: {resClientes[0][2]}\n
+            FECHA_PRESTAMO: {item[4]}
+            Estado Prestamo: {"En préstamo" if item[3]==1 else "Devuelto"}\n
+            **************'''
+        return respuesta
+    elif tipo=="fecha":
+        return    
 
 
 def ingresarPrestamo(ISBN, DNI, fecha_prestamo, estado):
