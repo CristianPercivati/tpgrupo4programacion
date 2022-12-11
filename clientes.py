@@ -3,18 +3,7 @@ from db import dbConsulta, dbModificacion, consultarTabla, ingresarRegistro, mod
 
 def consultarCliente(campo, valor):
     res = consultarTabla(campo, valor, "clientes")
-    print(res)
-    respuesta = ''
-    for item in res:
-        respuesta = respuesta + f'''
-        **************\n
-        DNI: {item[1]}\n
-        Nombre: {item[2]}\n
-        Teléfono: {item[3]}\n
-        Dirección: {item[4]}\n
-        Estado: -\n
-        **************'''
-    return respuesta
+    return res
 
 
 def ingresarCliente(dni, nombre, telefono, direccion):

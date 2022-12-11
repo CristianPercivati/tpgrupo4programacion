@@ -3,16 +3,7 @@ from db import dbConsulta, dbModificacion, consultarTabla, ingresarRegistro, mod
 
 def consultarLibro(campo, valor):
     res = consultarTabla(campo, valor, "libros")
-    respuesta = ''
-    for item in res:
-        respuesta = respuesta + f'''
-        **************\n
-        Título: {item[1]}\n
-        Autor: {item[2]}\n
-        ISBN: {item[3]}\n
-        Estado: -\n
-        **************'''
-    return respuesta
+    return res
 
 
 def ingresarLibro(autor, titulo, isbn):
