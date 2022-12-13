@@ -13,7 +13,8 @@ def ingresarCliente(dni, nombre, telefono, direccion):
                 'dni': dni,
                 'nombre': nombre,
                 'tel': telefono,
-                'direccion': direccion
+                'direccion': direccion,
+                'estado': 0
             }, "clientes")
         return "Cliente ingresado correctamente."
     except Exception as e:

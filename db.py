@@ -6,9 +6,9 @@ def dbConsulta(consulta):
     cursor = conexion.cursor()
     try:
         cursor.execute(consulta)
-    except ValueError as e:
+        resultado_consulta = cursor.fetchall()
+    except Exception as e:
         print(e)
-    resultado_consulta = cursor.fetchall()
     conexion.close()
     return resultado_consulta
 
@@ -24,8 +24,13 @@ def dbModificacion(consulta):
 
 def consultarTabla(campo, valor, tabla):
     consulta = f'SELECT * FROM {tabla} WHERE {campo} LIKE "%{valor}%"'
-    res=dbConsulta(consulta)
-    return res
+    try:
+        res=dbConsulta(consulta)
+        return res
+    except Exception as E:
+        print("Erorr:"+str(e))
+        exit()
+
     
 def ingresarRegistro(valoresPar, tabla):
     consulta = f'''INSERT INTO {tabla} ({",".join([campo for campo in valoresPar])}) VALUES ({",".join([f"'{valoresPar[campo]}'" for campo in valoresPar])})'''
@@ -33,14 +38,16 @@ def ingresarRegistro(valoresPar, tabla):
         res=dbModificacion(consulta)
         return res
     except Exception as e:
-        print(e)
+        print("Erorr:"+str(e))
+        exit()
         
 def eliminarRegistro(id, tabla):
     consulta = f'DELETE FROM {tabla} WHERE id={id}'
     try:
         dbModificacion(consulta)
-    except:
-        print('Hubo un error al eliminar el libro')
+    except Exception as e:
+        print("Erorr:"+str(e))
+        exit()
 
 def modificarRegistro(valoresPar, id, tabla):
     consulta = f'''UPDATE {tabla} SET {",".join([campo+"='"+valoresPar[campo]+"'"  for campo in valoresPar])} WHERE id={id}'''
@@ -48,4 +55,5 @@ def modificarRegistro(valoresPar, id, tabla):
         res=dbModificacion(consulta)
         print("Modificado con éxito")
     except Exception as e:
-        print('Hubo un error al ingresar el libro: '+str(e))
+        print("Erorr:"+str(e))
+        exit()

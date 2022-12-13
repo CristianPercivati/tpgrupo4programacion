@@ -2,9 +2,9 @@
 -- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 10-12-2022 a las 04:33:11
--- Versión del servidor: 10.4.24-MariaDB
+-- Servidor: 127.0.0.1:3306
+-- Tiempo de generación: 13-12-2022 a las 18:31:46
+-- Versión del servidor: 10.10.2-MariaDB
 -- Versión de PHP: 7.4.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -33,8 +33,8 @@ CREATE TABLE `clientes` (
   `nombre` varchar(255) NOT NULL,
   `tel` int(11) NOT NULL,
   `direccion` varchar(255) NOT NULL,
-  `estado` tinyint(4) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `estado` tinyint(4) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `clientes`
@@ -868,7 +868,6 @@ INSERT INTO `clientes` (`id`, `dni`, `nombre`, `tel`, `direccion`, `estado`) VAL
 (1847, 11009848, 'Charo Mee', 682433004, '7276 Dahle Drive', 0),
 (1848, 31161267, 'Waverley Bradnock', 636872360, '88811 Maywood Park', 0),
 (1849, 19535136, 'Brigham Gallon', 870276138, '9111 Fairview Circle', 1),
-(1850, 49576206, 'Zarla Hammerman', 340060747, '2013 Judy Junction', 0),
 (1851, 14806795, 'Dorie Dukesbury', 910188949, '650 Badeau Drive', 1),
 (1852, 24291066, 'Dianemarie McIlvoray', 954079930, '6968 Fisk Center', 0),
 (1853, 49408390, 'Marjie Luckwell', 959256751, '406 Amoth Pass', 0),
@@ -1043,7 +1042,8 @@ INSERT INTO `clientes` (`id`, `dni`, `nombre`, `tel`, `direccion`, `estado`) VAL
 (2022, 89837927, 'Miquela Ianilli', 589415048, '9 Porter Plaza', 0),
 (2023, 99699149, 'Shantee Shear', 715482809, '847 Clemons Place', 0),
 (2024, 34333333, 'Cristian', 1140633321, 'Parque Patricios', 0),
-(2026, 34435030, 'Cris', 1140633321, 'Parque Patricios', 0);
+(2026, 34435030, 'Cris', 1140633321, 'Parque Patricios', 0),
+(2028, 22222220, 'Lucass', 1212121313, 'Zona Oeste', 0);
 
 -- --------------------------------------------------------
 
@@ -1056,7 +1056,7 @@ CREATE TABLE `libros` (
   `titulo` varchar(2255) NOT NULL,
   `autor` varchar(255) NOT NULL,
   `ISBN` varchar(17) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `libros`
@@ -12152,7 +12152,8 @@ INSERT INTO `libros` (`id`, `titulo`, `autor`, `ISBN`) VALUES
 (11068, 'The Ice-Shirt (Seven Dreams #1)', 'William T. Vollmann', '140131965'),
 (11069, 'Poor People', 'Guillermo', '60878827'),
 (11070, 'Las aventuras de Tom Sawyer', 'Mark Twain', '8497646983'),
-(11074, 'aleph', 'borges', '13123123123');
+(11074, 'aleph', 'borges', '13123123123'),
+(11076, 'Alef', 'Borg', '444335325');
 
 -- --------------------------------------------------------
 
@@ -12166,7 +12167,22 @@ CREATE TABLE `prestamos` (
   `fk_cliente` int(11) NOT NULL,
   `estado` tinyint(1) NOT NULL,
   `fecha_prestamo` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `prestamos`
+--
+
+INSERT INTO `prestamos` (`id`, `fk_libro`, `fk_cliente`, `estado`, `fecha_prestamo`) VALUES
+(3, 1, 1253, 1, '2022-12-13'),
+(4, 3, 1253, 0, '2022-12-13'),
+(5, 5, 1253, 0, '2022-12-13'),
+(6, 24, 1027, 1, '2022-12-13'),
+(7, 23, 1027, 1, '2022-12-13'),
+(8, 20, 1030, 1, '2022-12-13'),
+(9, 14, 1031, 0, '2022-12-13'),
+(10, 36, 1036, 0, '2022-12-13'),
+(11, 42, 1036, 1, '2022-12-13');
 
 --
 -- Índices para tablas volcadas
@@ -12176,13 +12192,15 @@ CREATE TABLE `prestamos` (
 -- Indices de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `dni` (`dni`);
 
 --
 -- Indices de la tabla `libros`
 --
 ALTER TABLE `libros`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `ISBN` (`ISBN`);
 
 --
 -- Indices de la tabla `prestamos`
@@ -12200,19 +12218,19 @@ ALTER TABLE `prestamos`
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2027;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2034;
 
 --
 -- AUTO_INCREMENT de la tabla `libros`
 --
 ALTER TABLE `libros`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11076;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11077;
 
 --
 -- AUTO_INCREMENT de la tabla `prestamos`
 --
 ALTER TABLE `prestamos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Restricciones para tablas volcadas

@@ -200,7 +200,6 @@ def styleResultadoLibros(res):
     ══════════════════════════════════════   
           """
     subOpciones = subOpciones.upper()
-    print(subOpciones)
     return subOpciones
 
 def styleResultadoClientes(res):
