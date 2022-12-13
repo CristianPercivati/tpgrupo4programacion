@@ -1,31 +1,51 @@
+import time, sys
+
+delay = 0.001
+def typing(str):
+  for letter in str:
+    print(letter, end='', flush=True)
+    time.sleep(delay)
+  print()
+
+rojo = "\033[0;31m"
+verde = "\033[0;32m"
+amarillo = "\033[0;33m"
+rojo_claro = "\033[0;91m"
+verde_claro = "\033[0;92m"
+amarillo_claro = "\033[0;93m"
+magenta_claro = "\033[0;95m"
+cyan_claro = "\033[0;96m"
+
 def stylePrincipal():
     menu=int(input('''
-        ╔══════════════════════════════════════╗
-        ║                                      ║     
-        ║     MENÚ PRINCIPAL BIBLIOTECA        ║
-        ╠══════════════════════════════════════╣
-        ║                                      ║
-        ║    1.Consulta de disponibilidad      ║
-        ║    2.Préstamo de libro               ║
-        ║    3.Gestión del cliente             ║
-        ║    4.Gestión del libro               ║
-        ║    0.Salir                           ║
-        ║                                      ║ 
-        ╚══════════════════════════════════════╝
+    ╔══════════════════════════════════════╗
+    ║                                      ║
+    ║ █▄▄ █ █▄▄ █░░ █ █▀█ ▀█▀ █▀▀ █▀▀ ▄▀█  ║
+    ║ █▄█ █ █▄█ █▄▄ █ █▄█ ░█░ ██▄ █▄▄ █▀█  ║
+    ║                                      ║
+    ╠══════════════════════════════════════╣
+    ║                                      ║
+    ║    1.Consulta de disponibilidad      ║
+    ║    2.Préstamo de libro               ║
+    ║    3.Gestión del cliente             ║
+    ║    4.Gestión del libro               ║
+    ║    0.Salir                           ║
+    ║                                      ║ 
+    ╚══════════════════════════════════════╝
         '''))
     return menu
 def styleSubmenuConDisp():
     subOpciones=input("""
     ╔══════════════════════════════════════╗
     ║                                      ║     
-    ║     CONSULTAR POR:                   ║
+    ║ ▒█▀▀█ ▒█░▒█ ▒█▀▀▀█ ▒█▀▀█ ░█▀▀█ ▒█▀▀█ ║
+    ║ ▒█▀▀▄ ▒█░▒█ ░▀▀▀▄▄ ▒█░░░ ▒█▄▄█ ▒█▄▄▀ ║
+    ║ ▒█▄▄█ ░▀▄▄▀ ▒█▄▄▄█ ▒█▄▄█ ▒█░▒█ ▒█░▒█ ║
     ╠══════════════════════════════════════╣
     ║                                      ║
-    ║    L. ID Libro0                      ║
-    ║    S. ID Socio                       ║
-    ║    F. Fecha Préstamo                 ║
+    ║    I. ISBN LIBRO                     ║
     ║    V.Volver al menú anterior         ║
-    ║                                      ║
+    ║    0.Salir                           ║
     ║                                      ║ 
     ╚══════════════════════════════════════╝
     """
@@ -36,13 +56,15 @@ def styleSubmenuConPrest():
     subOpciones = input('''
     ╔══════════════════════════════════════╗
     ║                                      ║     
-    ║     CONSULTA POR:                    ║
+    ║ ▒█▀▀█ ▒█░▒█ ▒█▀▀▀█ ▒█▀▀█ ░█▀▀█ ▒█▀▀█ ║
+    ║ ▒█▀▀▄ ▒█░▒█ ░▀▀▀▄▄ ▒█░░░ ▒█▄▄█ ▒█▄▄▀ ║
+    ║ ▒█▄▄█ ░▀▄▄▀ ▒█▄▄▄█ ▒█▄▄█ ▒█░▒█ ▒█░▒█ ║
     ╠══════════════════════════════════════╣
     ║                                      ║
     ║    L. ISBN LIBRO                     ║
     ║    S. DNI SOCIO                      ║
-    ║    F. FECHA PRÉSTAMO:                ║
     ║    V.Volver al menú anterior         ║
+    ║    0.Salir                           ║
     ║                                      ║
     ║                                      ║ 
     ╚══════════════════════════════════════╝    
@@ -53,8 +75,10 @@ def styleSubmenuConPrest():
 def styleGestionPrestamo():
     subOpciones = input('''
     ╔══════════════════════════════════════╗
-    ║                                      ║     
-    ║      GESTIÓN DEL PRESTAMO            ║
+    ║                                      ║
+    ║ █▀█ █▀█ █▀▀ █▀ ▀█▀ ▄▀█ █▀▄▀█ █▀█ █▀  ║
+    ║ █▀▀ █▀▄ ██▄ ▄█ ░█░ █▀█ █░▀░█ █▄█ ▄█  ║
+    ║                                      ║
     ╠══════════════════════════════════════╣
     ║                                      ║
     ║    A.Alta Prestamo                   ║
@@ -62,7 +86,7 @@ def styleGestionPrestamo():
     ║    H.Historiales de Préstamos        ║
     ║    E.Eliminar Prestamo               ║
     ║    V.Volver al menú anterior         ║
-    ║                                      ║ 
+    ║    0.Salir                           ║ 
     ╚══════════════════════════════════════╝    
     '''
     )
@@ -71,8 +95,10 @@ def styleGestionPrestamo():
 def styleGestionLibro():
     subOpciones = input('''
     ╔══════════════════════════════════════╗
-    ║                                      ║     
-    ║      GESTIÓN DEL LIBRO               ║
+    ║                                      ║
+    ║ ░█─── ▀█▀ ░█▀▀█ ░█▀▀█ ░█▀▀▀█ ░█▀▀▀█  ║
+    ║ ░█─── ░█─ ░█▀▀▄ ░█▄▄▀ ░█──░█ ─▀▀▀▄▄  ║
+    ║ ░█▄▄█ ▄█▄ ░█▄▄█ ░█─░█ ░█▄▄▄█ ░█▄▄▄█  ║
     ╠══════════════════════════════════════╣
     ║                                      ║
     ║    A.Alta Libro                      ║
@@ -80,7 +106,7 @@ def styleGestionLibro():
     ║    M.Modificar Libro                 ║
     ║    E.Eliminar Libro                  ║
     ║    V.Volver al menú anterior         ║
-    ║                                      ║ 
+    ║    0.Salir                           ║ 
     ╚══════════════════════════════════════╝
     '''
     )
@@ -90,14 +116,16 @@ def styleConsultarLibro():
     subOpciones = input('''
     ╔══════════════════════════════════════╗
     ║                                      ║     
-    ║     CONSULTAR LIBRO                  ║
+    ║ ▒█▀▀█ ▒█░▒█ ▒█▀▀▀█ ▒█▀▀█ ░█▀▀█ ▒█▀▀█ ║
+    ║ ▒█▀▀▄ ▒█░▒█ ░▀▀▀▄▄ ▒█░░░ ▒█▄▄█ ▒█▄▄▀ ║
+    ║ ▒█▄▄█ ░▀▄▄▀ ▒█▄▄▄█ ▒█▄▄█ ▒█░▒█ ▒█░▒█ ║
     ╠══════════════════════════════════════╣
     ║                                      ║
     ║    A. Autor                          ║
     ║    T. Título                         ║
     ║    I. ISBN                           ║
     ║    V.Volver al menú anterior         ║
-    ║                                      ║
+    ║    0.Salir                           ║
     ║                                      ║ 
     ╚══════════════════════════════════════╝
     '''
@@ -108,7 +136,9 @@ def styleGestionCliente():
     subOpciones = input("""
     ╔══════════════════════════════════════╗
     ║                                      ║     
-    ║      GESTIÓN DEL CLIENTE             ║
+    ║ ▒█▀▀▀█ ▒█▀▀▀█ ▒█▀▀█ ▀█▀ ▒█▀▀▀█ ▒█▀▀▀█║ 
+    ║ ░▀▀▀▄▄ ▒█░░▒█ ▒█░░░ ▒█░ ▒█░░▒█ ░▀▀▀▄▄║
+    ║ ▒█▄▄▄█ ▒█▄▄▄█ ▒█▄▄█ ▄█▄ ▒█▄▄▄█ ▒█▄▄▄█║
     ╠══════════════════════════════════════╣
     ║                                      ║
     ║    A.Alta Cliente                    ║
@@ -116,7 +146,7 @@ def styleGestionCliente():
     ║    M.Modificar datos del cliente     ║
     ║    E.Eliminar cliente                ║
     ║    V.Volver al menú anterior         ║
-    ║                                      ║ 
+    ║    0.Salir                           ║ 
     ╚══════════════════════════════════════╝
     """  
     )
@@ -126,7 +156,9 @@ def styleConsultarCliente():
     subOpciones = input("""
     ╔══════════════════════════════════════╗
     ║                                      ║     
-    ║      CONSULTA ESTADO DEL CLIENTE     ║
+    ║ ▒█▀▀█ ▒█░▒█ ▒█▀▀▀█ ▒█▀▀█ ░█▀▀█ ▒█▀▀█ ║
+    ║ ▒█▀▀▄ ▒█░▒█ ░▀▀▀▄▄ ▒█░░░ ▒█▄▄█ ▒█▄▄▀ ║
+    ║ ▒█▄▄█ ░▀▄▄▀ ▒█▄▄▄█ ▒█▄▄█ ▒█░▒█ ▒█░▒█ ║
     ╠══════════════════════════════════════╣
     ║                                      ║
     ║     N. Nombre                        ║
@@ -134,7 +166,7 @@ def styleConsultarCliente():
     ║     A. Dirección                     ║
     ║     D. DNI                           ║
     ║     V.Volver al menú anterior        ║
-    ║                                      ║ 
+    ║     0.Salir                          ║ 
     ╚══════════════════════════════════════╝     
     """
     )

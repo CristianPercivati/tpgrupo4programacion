@@ -1,4 +1,4 @@
-import mysql.connector
+import mariadb
 import getpass
 import os
 
@@ -23,7 +23,7 @@ def conectarse():
             f.close()
         except Exception as e:
             print(e)
-    conexion = mysql.connector.connect(
+    conexion = mariadb.connect(
                                 user=usuario,
                                 passwd=contrasenia,
                                 host=servidor
@@ -33,7 +33,7 @@ def conectarse():
     res=cursor.fetchone()
     if res:
         conexion.close()
-        conexion = mysql.connector.connect(
+        conexion = mariadb.connect(
                                 user=usuario,
                                 passwd=contrasenia,
                                 host=servidor,
@@ -44,7 +44,7 @@ def conectarse():
         cursor.execute(f"CREATE DATABASE {bdd}")
         conexion.commit()
         conexion.close()
-        conexion = mysql.connector.connect(
+        conexion = mariadb.connect(
                         user=usuario,
                         passwd=contrasenia,
                         host=servidor,

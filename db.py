@@ -4,7 +4,10 @@ import db_select
 def dbConsulta(consulta):
     conexion = db_conexion.conectarse()
     cursor = conexion.cursor()
-    cursor.execute(consulta)
+    try:
+        cursor.execute(consulta)
+    except ValueError as e:
+        print(e)
     resultado_consulta = cursor.fetchall()
     conexion.close()
     return resultado_consulta
@@ -12,28 +15,28 @@ def dbConsulta(consulta):
 def dbModificacion(consulta):
     conexion = db_conexion.conectarse()
     cursor = conexion.cursor()
-    cursor.execute(consulta)
+    try:
+        cursor.execute(consulta)
+    except ValueError as e:
+        print(e)
     conexion.commit()
     conexion.close()
 
 def consultarTabla(campo, valor, tabla):
     consulta = f'SELECT * FROM {tabla} WHERE {campo} LIKE "%{valor}%"'
-    print(consulta)
     res=dbConsulta(consulta)
     return res
     
 def ingresarRegistro(valoresPar, tabla):
     consulta = f'''INSERT INTO {tabla} ({",".join([campo for campo in valoresPar])}) VALUES ({",".join([f"'{valoresPar[campo]}'" for campo in valoresPar])})'''
-    print(consulta)
     try:
         res=dbModificacion(consulta)
         return res
     except Exception as e:
-        return e
+        print(e)
         
 def eliminarRegistro(id, tabla):
     consulta = f'DELETE FROM {tabla} WHERE id={id}'
-    print(consulta)
     try:
         dbModificacion(consulta)
     except:

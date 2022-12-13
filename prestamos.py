@@ -1,43 +1,74 @@
 from db import dbConsulta, dbModificacion, consultarTabla, ingresarRegistro, modificarRegistro, eliminarRegistro
 from datetime import datetime
 
+def consultarDisponibilidadPrestamo(campo, valor, tipo):
+    if tipo=='isbn':
+        resLibros = consultarTabla(campo, valor, "libros")
+        try:
+            resPrestamo=consultarTabla('estado=1 AND fk_libro', resLibros[0][0], 'prestamos')
+            if resPrestamo and resPrestamo[0][3]==0:
+                return "El libro se encuentra disponible."
+            elif resPrestamo and resPrestamo[0][3]==1:
+                respuesta2=''
+                respuesta = '%20s%20s%20s%10s\n'%('Libro     ║','Socio    ║','Fecha prestamo   ║','Estado ') 
+                for item in resPrestamo:
+                        resClientes = consultarTabla('id', item[2], 'clientes')
+                        if len(resLibros[0][1])>15:
+                            itemTitulo=resLibros[0][1][0:15]               
+                        else:
+                            itemTitulo=resLibros[0][1]
+                        itemSocio=resClientes[0][2]
+                        itemFecha=item[4]
+                        estado="En préstamo" if item[3]==1 else "Devuelto"                
+                        respuesta2='%19s%19s%19s%15s'%(itemTitulo,itemSocio,itemFecha,estado)+'\n'
+                respuesta='El libro se encuentra en préstamo:\n'+'═'*72+'\n'+'\t'*3+'RESULTADO PRESTAMO'+'\n'+'═'*72+'\n'+respuesta+'═'*72+'\n'+respuesta2+'\n'+'═'*72
+                return respuesta
+            else:
+                return "El libro se encuentra disponible."      
+        except ValueError as e:
+            return "Ocurrió un error en la consulta"
+
 def consultarPrestamo(campo, valor,tipo):
     if tipo=='libro':
         resLibros = consultarTabla(campo, valor, "libros")
         resPrestamo=consultarTabla('estado=1 AND fk_libro', resLibros[0][0], 'prestamos')
-        resClientes = consultarTabla('id', resPrestamo[0][2], 'clientes')
-        respuesta = ''
+        respuesta2=''
+        respuesta = '%20s%20s%20s%10s\n'%('Libro     ║','Socio    ║','Fecha prestamo   ║','Estado ') 
         for item in resPrestamo:
-            respuesta = respuesta + f'''
-            **************\n
-            NOMBRE LIBRO: {resLibros[0][1]}\n
-            NOMBRE SOCIO: {resClientes[0][2]}\n
-            FECHA_PRESTAMO: {item[4]}
-            Estado Prestamo: {"En préstamo" if item[3]==1 else "Devuelto"}\n
-            **************'''
+                resClientes = consultarTabla('id', item[2], 'clientes')
+                if len(resLibros[0][1])>15:
+                    itemTitulo=resLibros[0][1][0:15]               
+                else:
+                    itemTitulo=resLibros[0][1]
+                itemSocio=resClientes[0][2]
+                itemFecha=item[4]
+                estado="En préstamo" if item[3]==1 else "Devuelto"                
+                respuesta2='%19s%19s%19s%15s'%(itemTitulo,itemSocio,itemFecha,estado)+'\n'
+        respuesta='═'*72+'\n'+'\t'*3+'RESULTADO PRESTAMO'+'\n'+'═'*72+'\n'+respuesta+'═'*72+'\n'+respuesta2+'\n'+'═'*72
         return respuesta
     elif tipo=="cliente":
-        resClientes = consultarTabla(campo, valor, 'clientes')
-        print(resClientes[0][0])
-        resPrestamo=consultarTabla('estado=1 AND fk_cliente', resClientes[0][0], 'prestamos')
-        resLibros = consultarTabla('id', resPrestamo[0][1], 'libros')
-        respuesta = ''
+        resClientes = consultarTabla(campo, valor, 'clientes')        
+        resPrestamo=consultarTabla('estado=1 AND fk_cliente', resClientes[0][0], 'prestamos')               
+        respuesta=''
+        respuesta2=''        
         for item in resPrestamo:
-            respuesta = respuesta + f'''
-            **************\n
-            NOMBRE LIBRO: {resLibros[0][1]}\n
-            NOMBRE SOCIO: {resClientes[0][2]}\n
-            FECHA_PRESTAMO: {item[4]}
-            Estado Prestamo: {"En préstamo" if item[3]==1 else "Devuelto"}\n
-            **************'''
+                resLibros = consultarTabla('id', item[1], 'libros')
+                respuesta = '%20s%20s%20s%10s\n'%('Libro     ║','Socio    ║','Fecha prestamo   ║','Estado ') 
+                if len(resLibros[0][1])>15:
+                    itemTitulo=resLibros[0][1][0:15]               
+                else:
+                    itemTitulo=resLibros[0][1]
+                itemSocio=resClientes[0][2]
+                itemFecha=item[4]
+                estado="En préstamo" if item[3]==1 else "Devuelto"                
+                respuesta2=respuesta2+'%19s%19s%19s%15s'%(itemTitulo,itemSocio,itemFecha,estado)+'\n'
+        respuesta='═'*72+'\n'+'\t'*3+'RESULTADO PRESTAMO'+'\n'+'═'*72+'\n'+respuesta+'═'*72+'\n'+respuesta2+'\n'+'═'*72
         return respuesta
-    elif tipo=="fecha":
-        return    
 
-
-def ingresarPrestamo(ISBN, DNI, fecha_prestamo, estado):
-    fecha_prestamo2=datetime.strptime(fecha_prestamo, "%d/%m/%Y").strftime("%Y-%m-%d")
-    print(fecha_prestamo2)
+def ingresarPrestamo(ISBN, DNI, estado):
+    #fecha_prestamo2=datetime.strptime(fecha_prestamo, "%d/%m/%Y").strftime("%Y-%m-%d")
+    fecha_prestamo = datetime.now().strftime("%Y-%m-%d")
+    print(fecha_prestamo)
     try:
         idLibro = consultarTabla('isbn', ISBN, "libros")
         idCliente = consultarTabla('dni', DNI, 'clientes')
@@ -57,7 +88,7 @@ def ingresarPrestamo(ISBN, DNI, fecha_prestamo, estado):
                     {
                         'fk_libro': idLibro[0][0],
                         'fk_cliente': idCliente[0][0],
-                        'fecha_prestamo': fecha_prestamo2,
+                        'fecha_prestamo': fecha_prestamo,
                         'estado': estado
                     }, "prestamos")
                 return "Prestamo ingresado correctamente."
@@ -66,7 +97,7 @@ def ingresarPrestamo(ISBN, DNI, fecha_prestamo, estado):
                     {
                         'fk_libro': idLibro[0][0],
                         'fk_cliente': idCliente[0][0],
-                        'fecha_prestamo': fecha_prestamo2,
+                        'fecha_prestamo': fecha_prestamo,
                         'estado': estado
                     }, "prestamos")
                 return "Prestamo ingresado correctamente."
